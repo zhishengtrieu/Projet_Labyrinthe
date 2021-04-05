@@ -2,9 +2,12 @@ from moteur import *
 from laby import *
 from boutton import *
 
-taille = 10
+taille = 10 #on initialise la taille (longueur d'un coté) du labyrinthe carré à 10 qui pourra être modifiée dans le menu du jeu
 
 pygame.init()
+screen = pygame.display.set_mode((700, 700)) #on définit les dimensions de la fenêtre du jeu
+background = pygame.image.load('assets/image.png') #on charge les asssets
+difficile = pygame.image.load('assets/dark.png')
 
 pygame.display.set_caption("Labyrinthe")
 font = pygame.font.SysFont("Times New Roman, Arial", 50)
@@ -12,12 +15,6 @@ font = pygame.font.SysFont("Times New Roman, Arial", 50)
 running = True
 debut = False
 difficult = False
-
-difficile = pygame.image.load('assets/dark.png')
-
-screen = pygame.display.set_mode((700, 700))
-
-background = pygame.image.load('assets/image.png')
 
 while running:
 

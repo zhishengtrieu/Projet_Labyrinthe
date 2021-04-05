@@ -4,46 +4,37 @@ from pile import *
 
 class laby:
     def __init__(self,t):
-        self.t=t
+        self.t=t #t correspond à la taille du labyrinthe
 
     def predecesseurs(self,pos,lab):
-        #parcours les chemins possibles depuis la position donné et fais la liste des predecesseurs de chaque case rencontrée
-        visite = []
-        P = Pile()
+        #cette fonction parcourt les chemins possibles depuis la position donnée et fait la liste des prédécesseurs de chaque case rencontrée
+        visite = [] #cette liste permet de garder en mémoire les cases déjà visitées
+        P = Pile() #on créé une pile
         P.empiler(pos)
         dico = {} #la liste des predecesseurs est stockée dans un dictionnaire
 
         while not P.est_vide():
-            u = P.depiler()
+            u = P.depiler() #on créé cuseur qui va contenir la case qu'on visite
             visite.append(u)
-            for v in lab[u - 1]:
+            for v in lab[u - 1]: #on fait une boucle pour parcourir chaque voisins de la case qu'on visite
+                #si le voisin n'a pas été visité on associe le voisin à la case du curseur dans le dictionnaire des prédecesseurs
                 if not v in visite:
                     dico[v] = u
                     P.empiler(v)
         return dico
 
     def solution(self, pos, lab):  # cette fonction va donner l'un des chemins vers la sortie
-        dico = self.predecesseurs(pos, lab)
-        rep = []
-        m = len(lab)
-        cell = m
+        dico = self.predecesseurs(pos, lab) #on récupère le dictionnaire des prédecesseurs
+        rep = [] #cette liste conservera les numéros des cases du chemin vers la sortie
+        m = len(lab) #m est le nombre de cellules dans le labyrinthe
+        cell = m #on part de la dernière cellules qui est l'arrivé avec un curseur
+
         while not cell == pos:
+            #tant qu'on est pas revenu à la position du joueur on parcourt le labyrinthe par les prédécesseurs
             cell = dico[cell]
             rep = [cell] + rep
 
-        rep = rep + [m]
-        chemin = []
-        for i in range(len(rep) - 1):
-            if rep[i + 1] - rep[i] == 1:
-                chemin.append(">")
-            elif rep[i + 1] - rep[i] == -1:
-                chemin.append("<")
-            elif rep[i + 1] - rep[i] == self.t:
-                chemin.append("V")
-            elif rep[i + 1] - rep[i] == -self.t:
-                chemin.append("^")
-
-        return rep, chemin
+        return rep+[m]
 
     #Partie de Yu Tian
     def voisins(self,x, decouvert):
