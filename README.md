@@ -13,6 +13,7 @@ Dossier :
   -"assets" : contient toutes les images du jeu
 
 Fichiers : 
+
   -main.py : Gère l'interface pygame et fait appelle au autres fonctions
   -affichage.py : Gère l'affichage des différents assets 
   -boutton.py : S'occupe de l'affichage des différents boutons de l'interface
