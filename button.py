@@ -25,11 +25,13 @@ play_rect = play.get_rect()
 play_rect.x = 350
 play_rect.y = 400
 
-def click (event, objet, res, addition):
+
+def click(event, objet, res, addition):
     if objet.collidepoint(event.pos):
         res += addition
     return res
 
-def diff (event, objet, res):
+
+def diff(event, objet, res):
     if objet.collidepoint(event.pos):
         return not res
