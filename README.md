@@ -1,5 +1,6 @@
-# Projet_Labyrinthe
+# `Projet_Labyrinthe`
 
+## Présentation du projet :
 
 Interface graphique choisie : Pygame
 
@@ -7,8 +8,15 @@ Algorithme de résolution : parcours en profondeur pour faire une liste des pré
 
 Structure du labyrinthe : le labyrinthe est sous la forme d'une liste d'adjacence
 
+### Equipe : 
+- Amirbekyan Alen
+- Tian Yu
+- Trieu Zhi-Sheng
 
-Contenu du projet :
+### Chargé de Maintenance : 
+- Trieu Zhi-Sheng
+
+## Contenu du projet :
 
 Dossier : 
 
@@ -16,11 +24,11 @@ Dossier :
 
 Fichiers :
 
-  -main.py : Gère l'interface pygame et fait appelle au autres fonctions
+  -main.py : Gère l'interface pygame et fait appelle aux autres fonctions
 
   -affichage.py : Gère l'affichage des différents assets 
 
-  -boutton.py : S'occupe de l'affichage des différents boutons de l'interface
+  -button.py : S'occupe de l'affichage des différents boutons de l'interface
 
   -moteur.py : S'occupe de l'affichage du labyrinthe
 
@@ -30,4 +38,4 @@ Fichiers :
 
   -pile.py : Définit l'objet Pile qui contient les fonctions de base d'une pile 
 
-  -depart_arrive.py : Gébère le point de départ et d'arrivé du labyrinthe
+  -depart_arrive.py : Génère le point de départ et d'arrivé du labyrinthe
