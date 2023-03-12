@@ -1,7 +1,7 @@
 from moteur import *
-from laby import *
+from Laby import *
 from button import *
-from affichage import *
+from Affichage_sprite import *
 
 taille = 10  # on initialise la taille (longueur d'un coté) du labyrinthe carré à 10 qui pourra être modifiée dans le menu du jeu
 
@@ -46,7 +46,7 @@ while running:
                 difficult = diff(event, bas2_rect, difficult)
             if play_rect.collidepoint(event.pos) and not taille == 0:
                 debut = True
-                a = laby(taille)
+                a = Laby(taille)
                 g = a.creation()
                 moteur = Moteur(g, 0, taille ** 2 - 1, difficult)
                 add(moteur.taille, moteur.matrice, moteur.liste_aff)
@@ -77,14 +77,14 @@ while running:
                         case pygame.K_UP | pygame.K_z:
                             moteur.perso.test_emplacement(moteur.matrice, 'haut')
                         case pygame.K_ESCAPE:
-                            print(a.solution(moteur.perso.emplacement, g))
+                            print(a.solution(moteur.perso.position, g))
 
         screen.blit(moteur.perso.image, moteur.perso.rect)
 
         if moteur.difficile:
             screen.blit(difficile, (moteur.perso.rect.x - 690, moteur.perso.rect.y - 690))
 
-        if moteur.perso.emplacement == taille ** 2:
+        if moteur.perso.position == taille ** 2:
             running = False
             debut = False
             msg = font.render('You Win !', True, (255, 255, 255))

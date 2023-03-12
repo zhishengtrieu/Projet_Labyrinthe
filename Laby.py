@@ -1,11 +1,14 @@
 # Partie de Zhi-Sheng Trieu
 import random
-from pile import *
+from Pile import *
 
 
-class laby:
+class Laby:
     def __init__(self, t):
         self.t = t  # t correspond à la taille du labyrinthe
+        self.hauteur = t
+        self.largeur = t
+        self.tab = []
 
     def predecesseurs(self, pos, lab):
         # cette fonction parcourt les chemins possibles depuis la position donnée et fait la liste des prédécesseurs
@@ -30,7 +33,7 @@ class laby:
         dico = self.predecesseurs(pos, lab)  # on récupère le dictionnaire des prédecesseurs
         rep = []  # cette liste conservera les numéros des cases du chemin vers la sortie
         nb = len(lab)  # nb est le nombre de cellules dans le labyrinthe
-        cell = nb  # on part de la dernière cellule qui est l'arrivé avec un curseur
+        cell = nb  # on part de la dernière cellule qui est l'arrivée avec un curseur
 
         while not cell == pos:
             # tant qu'on n'est pas revenu à la position du joueur, on parcourt le labyrinthe par les prédécesseurs
@@ -40,17 +43,18 @@ class laby:
         return rep + [nb]
 
     # Partie de Yu Tian
-    def voisins(self, x, decouvert):  # trouver les voisins de la casse x qui n'ont pas été découverts
-        L = []  # pour enregistrer les casses voisines
-        if x + self.t <= self.t ** 2 and x + self.t not in decouvert:  # si x n'est pas dans la dernière ligne, il a un voisin qui est en bas
-            L.append(x + self.t)
-        if x % self.t != 0 and x + 1 not in decouvert:  # si x n'est pas dans dernière colonne, il a un voisin qui est à gauche
-            L.append(x + 1)
-        if x - self.t >= 1 and x - self.t not in decouvert:  # si x n'est pas dans première ligne, il a un voisin qui est en haut
-            L.append(x - self.t)
-        if x % self.t != 1 and x - 1 not in decouvert:  # si x n'est pas dans la première colonne, il a un voisin à droite
-            L.append(x - 1)
-        return L
+    def voisins(self, x, parcourues):  # trouver les voisins de la casse x qui n'ont pas été parcourues
+        liste_voisins = []  # pour enregistrer les casses voisines
+        # si x n'est pas dans la dernière ligne, il a un voisin qui est en bas
+        if x + self.t <= self.t ** 2 and x + self.t not in parcourues:
+            liste_voisins.append(x + self.t)
+        if x % self.t != 0 and x + 1 not in parcourues:  # si x n'est pas dans dernière colonne, il a un voisin qui est à gauche
+            liste_voisins.append(x + 1)
+        if x - self.t >= 1 and x - self.t not in parcourues:  # si x n'est pas dans première ligne, il a un voisin qui est en haut
+            liste_voisins.append(x - self.t)
+        if x % self.t != 1 and x - 1 not in parcourues:  # si x n'est pas dans la première colonne, il a un voisin à droite
+            liste_voisins.append(x - 1)
+        return liste_voisins
 
     def chemin(self):  # découvre les casses
         x = random.choice([i for i in range(1, self.t ** 2 + 1)])  # créer un terrain avec la taille du labyrinthe
@@ -78,10 +82,11 @@ class laby:
                     # chemin
                     partition.append(sous_chemins)
                     sous_chemins = []
-                elif l[i] - l[i + 1] in [-1, 1]:  # mais il y a le cas particulier
-                    if (l[i] % self.t == 0 and l[i + 1] % self.t == 1) or (l[i] % self.t == 1 and l[
-                        i + 1] % self.t == 0):  # si une casse est la casse suivante, une est dans première colonne et
-                        # l'autre est dans la dernière colonne, enregistre le chemin
+                elif l[i] - l[i + 1] in [-1, 1]:  # mais il y a le cas particulier#
+                    # si une casse est la casse suivante, une est dans la première colonne et
+                    # l'autre est dans la dernière colonne, enregistre le chemin
+                    if (l[i] % self.t == 0 and l[i + 1] % self.t == 1) \
+                            or (l[i] % self.t == 1 and l[i + 1] % self.t == 0):
                         partition.append(sous_chemins)
                         sous_chemins = []
         partition.append(sous_chemins)

@@ -1,5 +1,5 @@
-from depart_arrive import Depart_arrive
-from perso import *
+from Depart_arrive import Depart_arrive
+from Perso import *
 
 
 class Moteur:
