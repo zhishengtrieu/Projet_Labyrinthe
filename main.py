@@ -23,9 +23,10 @@ while running:
     screen.blit(background, (0, 0))
     screen.blit(play, play_rect)
 
-    screen.blit(haut1, haut1_rect)
+    if taille < 50:
+        screen.blit(haut1, haut1_rect)
 
-    if taille != 0:
+    if taille > 5:
         screen.blit(bas1, bas1_rect)
 
     screen.blit(bas2, bas2_rect)
@@ -33,14 +34,19 @@ while running:
     font_taille = font.render('Taille  :' + str(taille), True, (0, 0, 0), (255, 255, 255))
     screen.blit(font_taille, (200, 120))
 
-    display_dificulty = font.render('Mode difficile  :' + str(difficult), True, (0, 0, 0), (255, 255, 255))
+    if difficult:
+        ombre = "OUI"
+    else:
+        ombre = "NON"
+    display_dificulty = font.render('Mode difficile : ' + ombre, True, (0, 0, 0), (255, 255, 255))
     screen.blit(display_dificulty, (200, 180))
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
 
-            taille = click(event, haut1_rect, taille, 5)
-            if not taille == 0:
+            if taille < 50:
+                taille = click(event, haut1_rect, taille, 5)
+            if taille > 5:
                 taille = click(event, bas1_rect, taille, -5)
             if diff(event, bas2_rect, difficult) is not None:
                 difficult = diff(event, bas2_rect, difficult)
@@ -82,7 +88,10 @@ while running:
         screen.blit(moteur.perso.image, moteur.perso.rect)
 
         if moteur.difficile:
-            screen.blit(difficile, (moteur.perso.rect.x - 690, moteur.perso.rect.y - 690))
+            # si on est en mode difficile, on affiche une ombre autour le personnage
+            screen.blit(difficile, (moteur.perso.rect.x - difficile.get_width() // 2 + moteur.perso.rect.width // 2
+                                    ,
+                                    moteur.perso.rect.y - difficile.get_height() // 2 + moteur.perso.rect.height // 2))
 
         if moteur.perso.position == taille ** 2:
             running = False

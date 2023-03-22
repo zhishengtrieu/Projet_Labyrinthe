@@ -21,9 +21,10 @@ bas2_rect.x = 400
 bas2_rect.y = 210
 
 play = pygame.image.load("assets/start.png")
+play = pygame.transform.scale(play, (100, 100))
 play_rect = play.get_rect()
-play_rect.x = 350
-play_rect.y = 400
+play_rect.x = 350 - play_rect.width // 2
+play_rect.y = 350 - play_rect.height // 2
 
 
 def click(event, objet, res, addition):
