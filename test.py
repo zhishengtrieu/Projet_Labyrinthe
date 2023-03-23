@@ -21,11 +21,11 @@ while running:
 
     # on dessine un cercle vert pour chaque nœud du graphe
     for noeud in graphe.get_noeuds():
-        pygame.draw.circle(screen, (0, 255, 0), (noeud.get_x() * 100 + 50, noeud.get_y() * 100 + 50), 10)
+        pygame.draw.circle(screen, (0, 255, 0), (noeud.get_x() * 100 + 50, noeud.get_y() * 100 + 50), 30)
         # on dessine un arc entre chaque nœud et ses voisins
         for arc in noeud.get_arcs():
             pygame.draw.line(screen, (0, 255, 0), (noeud.get_x() * 100 + 50, noeud.get_y() * 100 + 50),
-                             (arc.get_destination().get_x() * 100 + 50, arc.get_destination().get_y() * 100 + 50), 10)
+                             (arc.get_destination().get_x() * 100 + 50, arc.get_destination().get_y() * 100 + 50), 61)
 
 
 

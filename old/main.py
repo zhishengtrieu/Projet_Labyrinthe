@@ -1,6 +1,6 @@
 from moteur import *
 from Laby import *
-from old.button import *
+from button import *
 from old.Affichage_sprite import *
 
 # on initialise la taille (longueur d'un côté) du labyrinthe carré à 10 qui pourra être modifiée dans le menu du jeu
@@ -32,10 +32,10 @@ while running:
     screen.blit(play, play_rect)
 
     if taille < 50:
-        screen.blit(haut1, haut1_rect)
+        screen.blit(up_width, up_width_rect)
 
     if taille > 5:
-        screen.blit(bas1, bas1_rect)
+        screen.blit(down_width, down_width_rect)
 
     screen.blit(bas2, bas2_rect)
 
@@ -53,9 +53,9 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
 
             if taille < 50:
-                taille = click(event, haut1_rect, taille, 5)
+                taille = click(event, up_width_rect, taille, 5)
             if taille > 5:
-                taille = click(event, bas1_rect, taille, -5)
+                taille = click(event, down_width_rect, taille, -5)
             if diff(event, bas2_rect, difficult) is not None:
                 difficult = diff(event, bas2_rect, difficult)
             if play_rect.collidepoint(event.pos) and not taille == 0:
