@@ -26,24 +26,26 @@ class Laby:
             u = pile.sommet()
             visite.append(u)
             u.visite()
-            # récupère la liste de voisins possibles
-            voisins = u.voisins_possibles(self.graphe)
-            if voisins:
-                arc = random.choice(voisins)
-                voisins.remove(arc)
-                v = arc.get_destination()
+            # récupère la liste des arcs possibles
+            arcs = u.arcs_possibles(self.graphe)
+            if arcs:
+                # on choisit un arc au hasard dans la liste
+                arc = random.choice(arcs)
+                # on l'enlève de la liste des voisins possibles
+                arcs.remove(arc)
+                voisin = arc.get_destination()
                 count = 1
                 # on choisit un voisin au hasard et si ce voisin n'a pas été visité, on crée un arc entre les deux cases
                 # sinon on en choisit un autre jusqu'à qu'on ait vu tous les voisins
-                while v.visited and len(voisins):
-                    arc = random.choice(voisins)
-                    voisins.remove(arc)
-                    v = arc.get_destination()
+                while voisin.visited and len(arcs):
+                    arc = random.choice(arcs)
+                    arcs.remove(arc)
+                    voisin = arc.get_destination()
                     count += 1
 
-                if not v.visited:
-                    pile.empiler(v)
-                    self.graphe.ajouter_arc(u, v)
+                if not voisin.visited:
+                    pile.empiler(voisin)
+                    self.graphe.ajouter_arc(u, voisin)
                 else:
                     # si on n'a pas de voisins non visités, c'est qu'on est arrivé à un cul-de-sac
                     # le premier cul-de-sac rencontré est la sortie

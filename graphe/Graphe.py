@@ -16,18 +16,29 @@ class Noeud:
     def ajouter_voisin(self, voisin):
         self.arcs.append(Arc(voisin))
 
-    def voisins_possibles(self, graphe) -> list:
+    def arcs_possibles(self, graphe) -> list:
         # on récupère les voisins possibles qu'il y ait un chemin ou non
-        voisins = []
+        arcs = []
         if self.x < graphe.longueur - 1:
-            voisins.append(Arc(graphe.get_noeud(self.x + 1, self.y)))
+            arcs.append(Arc(self.voisin("droite", graphe)))
         if self.x > 0:
-            voisins.append(Arc(graphe.get_noeud(self.x - 1, self.y)))
+            arcs.append(Arc(self.voisin("gauche", graphe)))
         if self.y < graphe.hauteur - 1:
-            voisins.append(Arc(graphe.get_noeud(self.x, self.y + 1)))
+            arcs.append(Arc(self.voisin("bas", graphe)))
         if self.y > 0:
-            voisins.append(Arc(graphe.get_noeud(self.x, self.y - 1)))
-        return voisins
+            arcs.append(Arc(self.voisin("haut", graphe)))
+        return arcs
+
+    def voisin(self, direction, graphe):
+        match direction:
+            case "droite":
+                return graphe.get_noeud(self.x + 1, self.y)
+            case "gauche":
+                return graphe.get_noeud(self.x - 1, self.y)
+            case "bas":
+                return graphe.get_noeud(self.x, self.y + 1)
+            case "haut":
+                return graphe.get_noeud(self.x, self.y - 1)
 
     def get_arcs(self) -> list:
         return self.arcs
@@ -49,8 +60,6 @@ class Noeud:
 
     def __repr__(self):
         return f"({self.x}, {self.y})"
-
-
 
 
 class Graphe:

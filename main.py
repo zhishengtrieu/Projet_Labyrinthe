@@ -1,6 +1,7 @@
 import pygame
 from Laby import *
 from button import *
+from Player import *
 
 # on initialise la longueur et la hauteur du labyrinthe
 longueur, hauteur = 10, 10
@@ -64,18 +65,18 @@ while running:
         if hauteur > 5:
             screen.blit(down_height, down_height_rect)
 
-        mod_button = pygame.transform.flip(pygame.image.load('assets/haut.png'), 0, 180)
-        mod_button_rect = down_width.get_rect()
-        mod_button_rect.x = 450
-        mod_button_rect.y = 250
-        screen.blit(mod_button, mod_button_rect)
-
         if hard_mod:
             ombre = "Oui"
         else:
             ombre = "Non"
         display_mod = font.render('Mode difficile : ' + ombre, True, (0, 0, 0), (255, 255, 255))
         screen.blit(display_mod, (200, 200))
+
+        mod_button = pygame.transform.rotate(pygame.image.load('assets/haut.png'), 270)
+        mod_button_rect = down_width.get_rect()
+        mod_button_rect.x = 530
+        mod_button_rect.y = 190
+        screen.blit(mod_button, mod_button_rect)
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 longueur = click(event, up_width_rect, longueur, 5)
@@ -88,31 +89,37 @@ while running:
                     hard_mod = change_mod(event, mod_button_rect, hard_mod)
                 if play_rect.collidepoint(event.pos) and not longueur == 0:
                     home = False
-                    maze = Laby(longueur, longueur)
+                    maze = Laby(longueur, hauteur)
+                    taille_case = window_height // longueur
+                    player = Player(maze.depart, taille_case)
                     screen.fill((0, 0, 0))
             if event.type == pygame.QUIT:
                 running = False
                 home = False
     else:
         graphe = maze.graphe
-        taille_case = window_height // longueur
         for noeud in graphe.get_noeuds():
             pygame.draw.circle(screen, (0, 255, 0),
-                               ((noeud.get_x() + 1 / 2) * taille_case, (noeud.get_y() + 1 / 2) * taille_case), 30)
+                               ((noeud.get_x() + 1 / 2) * taille_case, (noeud.get_y() + 1 / 2) * taille_case),
+                               taille_case * 0.9 // 2)
             # on dessine un arc entre chaque nœud et ses voisins
             for arc in noeud.get_arcs():
                 pygame.draw.line(screen, (0, 255, 0),
                                  ((noeud.get_x() + 1 / 2) * taille_case, (noeud.get_y() + 1 / 2) * taille_case),
                                  ((arc.get_destination().get_x() + 1 / 2) * taille_case,
                                   (arc.get_destination().get_y() + 1 / 2) * taille_case),
-                                 61)
+                                 int(taille_case * 0.9))
 
-        # on dessine le depart et l'arrivée
-        pygame.draw.circle(screen, (255, 0, 0),
-                           ((maze.depart.get_x() + 1 / 2) * taille_case, (maze.depart.get_y() + 1 / 2) * taille_case),
-                           15)
-        pygame.draw.circle(screen, (0, 0, 255),
-                           ((maze.fin.get_x() + 1 / 2) * taille_case, (maze.fin.get_y() + 1 / 2) * taille_case), 15)
+        # on affiche le depart et l'arrivée
+        img_depart = pygame.image.load('assets/depart.png')
+        img_depart = pygame.transform.scale(img_depart, (taille_case, taille_case))
+        screen.blit(img_depart, (maze.depart.get_x() * taille_case, maze.depart.get_y() * taille_case))
+
+        img_fin = pygame.image.load('assets/arrivee.png')
+        img_fin = pygame.transform.scale(img_fin, (taille_case / 2, taille_case / 2))
+        screen.blit(img_fin, ((maze.fin.get_x() + 1 / 4) * taille_case, (maze.fin.get_y() + 1 / 4) * taille_case))
+
+        # on affiche le joueur
 
         for event in pygame.event.get():
             match event.type:
@@ -122,16 +129,27 @@ while running:
                 case pygame.KEYDOWN:
                     match event.key:
                         case pygame.K_LEFT | pygame.K_q:
-                            print("gauche")
+                            player.test_emplacement(maze, "gauche")
                         case pygame.K_RIGHT | pygame.K_d:
-                            print("droite")
+                            player.test_emplacement(maze, "droite")
                         case pygame.K_DOWN | pygame.K_s:
-                            print("bas")
+                            player.test_emplacement(maze, "bas")
                         case pygame.K_UP | pygame.K_z:
-                            print("haut")
+                            player.test_emplacement(maze, "haut")
                         case pygame.K_ESCAPE:
                             print(maze.solution)
+        player.draw(screen)
+        if player.position == maze.fin:
+            running = False
+            home = False
+            msg = font.render('You Win !', True, (255, 255, 255))
+            # on veut que le message apparaisse au milieu de l'écran
+            msg_rect = msg.get_rect(center=(350, 350))
+            screen.blit(msg, msg_rect)
 
     pygame.display.flip()
+
+    if not running:
+        pygame.time.wait(800)
 
 pygame.quit()
