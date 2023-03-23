@@ -8,7 +8,7 @@ class Affichage_sprite(pygame.sprite.Sprite):
         self.taille = int(10 / taille * 70)
         self.tourner = cote[1]
         self.nb_cote = cote[0]
-        self.image = pygame.image.load('assets/' + str(self.nb_cote) + '.png')
+        self.image = pygame.image.load('../assets/' + str(self.nb_cote) + '.png')
         self.image = pygame.transform.scale(self.image, (self.taille, self.taille))
         self.image = pygame.transform.rotate(self.image, 90 * self.tourner)
         self.rect = self.image.get_rect()

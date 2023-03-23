@@ -3,7 +3,7 @@ import pygame
 
 class Perso:
     def __init__(self, taille, debut):
-        self.image = pygame.image.load('assets/perso.png')
+        self.image = pygame.image.load('../assets/perso_old.png')
         self.rect = self.image.get_rect()
         self.taille_lab = int(taille)
         self.taille = int(10 / taille * 70)

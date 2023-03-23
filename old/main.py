@@ -1,15 +1,21 @@
 from moteur import *
 from Laby import *
-from button import *
-from Affichage_sprite import *
+from old.button import *
+from old.Affichage_sprite import *
 
-taille = 10  # on initialise la taille (longueur d'un coté) du labyrinthe carré à 10 qui pourra être modifiée dans le menu du jeu
+# on initialise la taille (longueur d'un côté) du labyrinthe carré à 10 qui pourra être modifiée dans le menu du jeu
+taille = 10
+longueur = 10
+hauteur = 10
+
+longueur_fenetre = 700
+hauteur_fenetre = 700
 
 pygame.init()
-screen = pygame.display.set_mode((700, 700))  # on définit les dimensions de la fenêtre du jeu
-background = pygame.image.load('assets/image.png')  # on charge les assets
-background = pygame.transform.scale(background, (700, 700))
-difficile = pygame.image.load('assets/dark.png')
+screen = pygame.display.set_mode((longueur_fenetre, hauteur_fenetre))  # on définit les dimensions de la fenêtre du jeu
+background = pygame.image.load('../assets/image.png')  # on charge les assets
+# on veut que l'image de fond prenne toute la fenêtre
+background = pygame.transform.scale(background, (longueur_fenetre, hauteur_fenetre))
 
 pygame.display.set_caption("Labyrinthe")
 font = pygame.font.SysFont("Times New Roman, Arial", 50)
@@ -17,6 +23,8 @@ font = pygame.font.SysFont("Times New Roman, Arial", 50)
 running = True
 debut = False
 difficult = False
+difficile = pygame.image.load('../assets/dark.png')
+
 
 while running:
 
@@ -39,7 +47,7 @@ while running:
     else:
         ombre = "NON"
     display_dificulty = font.render('Mode difficile : ' + ombre, True, (0, 0, 0), (255, 255, 255))
-    screen.blit(display_dificulty, (200, 180))
+    screen.blit(display_dificulty, (200, 200))
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -52,9 +60,9 @@ while running:
                 difficult = diff(event, bas2_rect, difficult)
             if play_rect.collidepoint(event.pos) and not taille == 0:
                 debut = True
-                a = Laby(taille)
-                g = a.creation()
-                moteur = Moteur(g, 0, taille ** 2 - 1, difficult)
+                maze = Laby(taille, taille)
+                graphe = maze.creation()
+                moteur = Moteur(graphe, 0, taille ** 2 - 1, difficult)
                 add(moteur.taille, moteur.matrice, moteur.liste_aff)
         if event.type == pygame.QUIT:
             running = False
@@ -83,7 +91,7 @@ while running:
                         case pygame.K_UP | pygame.K_z:
                             moteur.perso.test_emplacement(moteur.matrice, 'haut')
                         case pygame.K_ESCAPE:
-                            print(a.solution(moteur.perso.position, g))
+                            print(maze.solution(moteur.perso.position, graphe))
 
         screen.blit(moteur.perso.image, moteur.perso.rect)
 

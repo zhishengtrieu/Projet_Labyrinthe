@@ -1,14 +1,57 @@
 # Partie de Zhi-Sheng Trieu
 import random
 from Pile import *
+from graphe.Graphe import Graphe
 
 
 class Laby:
-    def __init__(self, t):
-        self.t = t  # t correspond à la taille du labyrinthe
-        self.hauteur = t
-        self.largeur = t
+    def __init__(self, longueur: int, hauteur: int):
+        self.t = longueur
+        self.longueur = longueur
+        self.hauteur = hauteur
         self.tab = []
+        self.graphe = Graphe(self.longueur, self.hauteur)
+        self.solution = []
+        self.depart = self.graphe.depart
+        self.fin = None
+        # on crée les chemins
+        self.dfs()
+
+    def dfs(self):
+        # on utilise le parcours en profondeur pour créer le labyrinthe
+        visite = []  # cette liste permet de garder en mémoire les cases déjà visitées
+        pile = Pile()
+        pile.empiler(self.depart)
+        while not pile.empty():
+            u = pile.sommet()
+            visite.append(u)
+            u.visite()
+            # récupère la liste de voisins possibles
+            voisins = u.voisins_possibles(self.graphe)
+            if voisins:
+                arc = random.choice(voisins)
+                voisins.remove(arc)
+                v = arc.get_destination()
+                count = 1
+                # on choisit un voisin au hasard et si ce voisin n'a pas été visité, on crée un arc entre les deux cases
+                # sinon on en choisit un autre jusqu'à qu'on ait vu tous les voisins
+                while v.visited and len(voisins):
+                    arc = random.choice(voisins)
+                    voisins.remove(arc)
+                    v = arc.get_destination()
+                    count += 1
+
+                if not v.visited:
+                    pile.empiler(v)
+                    self.graphe.ajouter_arc(u, v)
+                else:
+                    # si on n'a pas de voisins non visités, c'est qu'on est arrivé à un cul-de-sac
+                    # le premier cul-de-sac rencontré est la sortie
+                    if not self.fin:
+                        self.fin = u
+                        self.solution = pile.data + [self.fin]
+                    # on remonte dans la pile jusqu'à qu'on ait un voisin non visité
+                    pile.depiler()
 
     def predecesseurs(self, pos, lab):
         # cette fonction parcourt les chemins possibles depuis la position donnée et fait la liste des prédécesseurs
