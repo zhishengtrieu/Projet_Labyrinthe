@@ -71,9 +71,9 @@ while running:
         screen.blit(mod_button, mod_button_rect)
 
         if hard_mod:
-            ombre = "OUI"
+            ombre = "Oui"
         else:
-            ombre = "NON"
+            ombre = "Non"
         display_mod = font.render('Mode difficile : ' + ombre, True, (0, 0, 0), (255, 255, 255))
         screen.blit(display_mod, (200, 200))
         for event in pygame.event.get():
@@ -84,8 +84,8 @@ while running:
                     longueur = click(event, down_width_rect, longueur, -5)
                 if hauteur > 5:
                     hauteur = click(event, down_height_rect, hauteur, -5)
-                if diff(event, mod_button_rect, hard_mod) is not None:
-                    hard_mod = diff(event, mod_button_rect, hard_mod)
+                if change_mod(event, mod_button_rect, hard_mod) is not None:
+                    hard_mod = change_mod(event, mod_button_rect, hard_mod)
                 if play_rect.collidepoint(event.pos) and not longueur == 0:
                     home = False
                     maze = Laby(longueur, longueur)
@@ -106,10 +106,31 @@ while running:
                                  ((arc.get_destination().get_x() + 1 / 2) * taille_case,
                                   (arc.get_destination().get_y() + 1 / 2) * taille_case),
                                  61)
+
+        # on dessine le depart et l'arrivée
+        pygame.draw.circle(screen, (255, 0, 0),
+                           ((maze.depart.get_x() + 1 / 2) * taille_case, (maze.depart.get_y() + 1 / 2) * taille_case),
+                           15)
+        pygame.draw.circle(screen, (0, 0, 255),
+                           ((maze.fin.get_x() + 1 / 2) * taille_case, (maze.fin.get_y() + 1 / 2) * taille_case), 15)
+
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-                home = False
+            match event.type:
+                case pygame.QUIT:
+                    running = False
+                    debut = False
+                case pygame.KEYDOWN:
+                    match event.key:
+                        case pygame.K_LEFT | pygame.K_q:
+                            print("gauche")
+                        case pygame.K_RIGHT | pygame.K_d:
+                            print("droite")
+                        case pygame.K_DOWN | pygame.K_s:
+                            print("bas")
+                        case pygame.K_UP | pygame.K_z:
+                            print("haut")
+                        case pygame.K_ESCAPE:
+                            print(maze.solution)
 
     pygame.display.flip()
 

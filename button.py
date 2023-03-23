@@ -33,6 +33,6 @@ def click(event, objet, res, addition):
     return res
 
 
-def diff(event, objet, res):
+def change_mod(event, objet, res):
     if objet.collidepoint(event.pos):
         return not res

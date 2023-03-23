@@ -56,8 +56,8 @@ while running:
                 taille = click(event, up_width_rect, taille, 5)
             if taille > 5:
                 taille = click(event, down_width_rect, taille, -5)
-            if diff(event, bas2_rect, difficult) is not None:
-                difficult = diff(event, bas2_rect, difficult)
+            if change_mod(event, bas2_rect, difficult) is not None:
+                difficult = change_mod(event, bas2_rect, difficult)
             if play_rect.collidepoint(event.pos) and not taille == 0:
                 debut = True
                 maze = Laby(taille, taille)
