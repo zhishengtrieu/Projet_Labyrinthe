@@ -18,6 +18,11 @@ background = pygame.transform.scale(background, (window_width, window_height))
 pygame.display.set_caption("Labyrinthe")
 font = pygame.font.SysFont("Times New Roman, Arial", 40)
 
+#on charge une icône pour la fenêtre
+icon = pygame.image.load('assets/arrivee.png')
+pygame.display.set_icon(icon)
+
+
 running = True
 home = True
 hard_mod = False
