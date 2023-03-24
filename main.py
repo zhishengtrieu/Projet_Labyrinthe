@@ -9,11 +9,11 @@ longueur, hauteur = 10, 10
 window_height, window_width = 700, 700
 
 pygame.init()
-screen = pygame.display.set_mode((window_width, window_height))
+screen = pygame.display.set_mode((window_width, window_height), pygame.RESIZABLE)
 # on charge le fond
 background = pygame.image.load('assets/laby.jpg')
 # on veut que l'image de fond prenne toute la fenêtre
-background = pygame.transform.scale(background, (window_height, window_width))
+background = pygame.transform.scale(background, (window_width, window_height))
 
 pygame.display.set_caption("Labyrinthe")
 font = pygame.font.SysFont("Times New Roman, Arial", 40)
@@ -72,7 +72,7 @@ while running:
                     hard_mod = change_mod(event, mod_button_rect, hard_mod)
                 if play_rect.collidepoint(event.pos) and not longueur == 0:
                     home = False
-                    taille_case = window_height // longueur
+                    taille_case = window_height // max(longueur, hauteur)
                     maze = Maze(longueur, hauteur, taille_case)
                     player = maze.player
             if event.type == pygame.QUIT:
@@ -109,9 +109,10 @@ while running:
                                    taille_case // 4)
 
         # on affiche le depart et l'arrivée
-        img_depart = pygame.image.load('assets/depart.png')
-        img_depart = pygame.transform.scale(img_depart, (taille_case, taille_case))
-        screen.blit(img_depart, (maze.depart.get_x() * taille_case, maze.depart.get_y() * taille_case))
+        img_depart = pygame.image.load('assets/kamehouse.png')
+        img_depart = pygame.transform.scale(img_depart, (taille_case // 2, taille_case // 2))
+        screen.blit(img_depart, (maze.depart.get_x() * taille_case + img_depart.get_width() // 2,
+                                 maze.depart.get_y() * taille_case + img_depart.get_height() // 2))
 
         img_fin = pygame.image.load('assets/arrivee.png')
         img_fin = pygame.transform.scale(img_fin, (taille_case / 2, taille_case / 2))
@@ -145,17 +146,21 @@ while running:
 
         # on affiche le message de victoire si le joueur arrive à la fin
         if player.position == maze.fin:
-            running = False
-            home = False
+            home = True
+            display_solution = False
+            maze = None
+
             msg = font.render('You Win !', True, (255, 0, 0))
             # on veut que le message apparaisse au milieu de l'écran
-            msg_rect = msg.get_rect(center=(window_height//2, window_width//2))
+            msg_rect = msg.get_rect(center=(window_height // 2, window_width // 2))
             screen.blit(msg, msg_rect)
+
+        # on met un délai pour éviter que le jeu retourne instantanément à l'accueil
+        if home:
+            pygame.display.update()
+            pygame.time.wait(800)
 
     pygame.display.update()
 
-    # on met un délai pour éviter que le jeu se ferme instantanément
-    if not running:
-        pygame.time.wait(800)
 
 pygame.quit()

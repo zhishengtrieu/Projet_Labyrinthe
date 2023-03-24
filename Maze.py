@@ -64,7 +64,6 @@ class Maze:
 
             if u == self.fin:
                 self.solution = pile.data
-                print("Solution trouvée !")
                 break
             u.visite()
             # récupère la liste des arcs
