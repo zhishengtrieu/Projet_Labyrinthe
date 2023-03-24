@@ -1,4 +1,4 @@
-class Pile:
+class Stack:
     """ Classe pour les piles
     Utilisation
     p = Pile() renvoie une pile vide
@@ -10,15 +10,15 @@ class Pile:
     def empty(self):
         return self.data == []
 
-    def sommet(self):
+    def top(self):
         assert not self.empty(), 'Pile vide'
         return self.data[-1]
 
-    def empiler(self, x):
+    def push(self, x):
         self.data.append(x)
         return self
 
-    def depiler(self):
+    def pop(self):
         assert not self.empty(), 'Pile vide'
         return self.data.pop()
 
