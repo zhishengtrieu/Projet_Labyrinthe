@@ -1,4 +1,4 @@
-# `Projet_Labyrinthe`
+<h1 align="center">Projet Labyrinthe</h1>
 
 ## Présentation du projet :
 

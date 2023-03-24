@@ -1,11 +1,10 @@
 import pygame
 
-
 class Player:
     def __init__(self, noeud, taille):
         self.position = noeud
         self.taille = taille
-        self.image = pygame.transform.scale(pygame.image.load("assets/perso.png"), (self.taille, self.taille))
+        self.image = pygame.transform.scale(pygame.image.load("assets/goku.gif"), (self.taille, self.taille))
         self.rect = self.image.get_rect()
         self.rect.x = self.position.x * self.taille
         self.rect.y = self.position.y * self.taille

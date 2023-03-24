@@ -1,3 +1,6 @@
+import random
+
+
 class Arc:
     def __init__(self, destination):
         self.destination = destination
@@ -70,8 +73,11 @@ class Graphe:
         for j in range(self.hauteur):
             for i in range(self.longueur):
                 self.noeuds.append(Noeud(i, j))
-        self.depart = self.noeuds[0]
-        self.fin = self.noeuds[-1]
+        # on choisit le départ et l'arrivée de façon aléatoire
+        self.depart = random.choice(self.noeuds)
+        self.fin = random.choice(self.noeuds)
+        while self.fin == self.depart:
+            self.fin = random.choice(self.noeuds)
 
     def get_noeuds(self) -> list:
         return self.noeuds

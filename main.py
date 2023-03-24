@@ -21,7 +21,6 @@ font = pygame.font.SysFont("Times New Roman, Arial", 40)
 running = True
 home = True
 hard_mod = False
-mod = pygame.image.load('assets/dark.png')
 maze = None
 display_solution = False
 
@@ -73,14 +72,14 @@ while running:
                     hard_mod = change_mod(event, mod_button_rect, hard_mod)
                 if play_rect.collidepoint(event.pos) and not longueur == 0:
                     home = False
-                    maze = Maze(longueur, hauteur)
                     taille_case = window_height // longueur
-                    player = Player(maze.depart, taille_case)
-                    screen.fill((0, 0, 0))
+                    maze = Maze(longueur, hauteur, taille_case)
+                    player = maze.player
             if event.type == pygame.QUIT:
                 running = False
                 home = False
     else:
+        screen.fill((0, 0, 0))
         graphe = maze.graphe
         for noeud in graphe.get_noeuds():
             pygame.draw.circle(screen, (255, 255, 255),
@@ -134,6 +133,7 @@ while running:
                         case pygame.K_UP | pygame.K_z:
                             player.move(maze, "haut")
                         case pygame.K_ESCAPE:
+                            maze.resolution()
                             display_solution = True
 
         # on affiche le joueur
@@ -149,10 +149,10 @@ while running:
             home = False
             msg = font.render('You Win !', True, (255, 0, 0))
             # on veut que le message apparaisse au milieu de l'écran
-            msg_rect = msg.get_rect(center=(350, 350))
+            msg_rect = msg.get_rect(center=(window_height//2, window_width//2))
             screen.blit(msg, msg_rect)
 
-    pygame.display.flip()
+    pygame.display.update()
 
     # on met un délai pour éviter que le jeu se ferme instantanément
     if not running:
