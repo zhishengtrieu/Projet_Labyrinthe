@@ -1,6 +1,5 @@
-import pygame
 from Laby import *
-from button import *
+from home import *
 from Player import *
 
 # on initialise la longueur et la hauteur du labyrinthe
@@ -12,7 +11,7 @@ window_height, window_width = 700, 700
 pygame.init()
 screen = pygame.display.set_mode((window_width, window_height))
 # on charge le fond
-background = pygame.image.load('assets/image.png')
+background = pygame.image.load('assets/laby.jpg')
 # on veut que l'image de fond prenne toute la fenêtre
 background = pygame.transform.scale(background, (window_height, window_width))
 
@@ -24,47 +23,31 @@ home = True
 hard_mod = False
 mod = pygame.image.load('assets/dark.png')
 maze = None
+display_solution = False
 
 while running:
     if home:
+        # on affiche l'image de fond de l'accueil
         screen.blit(background, (0, 0))
-        screen.blit(play, play_rect)
 
         # on affiche des boutons pour modifier la longueur et la hauteur du labyrinthe
-        up_width = pygame.transform.rotate(pygame.image.load('assets/haut.png'), 90)
-        up_width_rect = up_width.get_rect()
-        up_width_rect.x = 170
-        up_width_rect.y = 20
         screen.blit(up_width, up_width_rect)
 
         txt_longueur = font.render('Longueur  :' + str(longueur), True, (0, 0, 0), (255, 255, 255))
         screen.blit(txt_longueur, (250, 40))
 
-        down_width = pygame.transform.rotate(pygame.image.load('assets/haut.png'), 270)
-        down_width_rect = down_width.get_rect()
-        down_width_rect.x = 485
-        down_width_rect.y = 20
-
         if longueur > 5:
             screen.blit(down_width, down_width_rect)
 
-        up_height = pygame.transform.rotate(pygame.image.load('assets/haut.png'), 90)
-        up_height_rect = up_height.get_rect()
-        up_height_rect.x = 180
-        up_height_rect.y = 100
         screen.blit(up_height, up_height_rect)
 
         txt_hauteur = font.render('Hauteur  :' + str(hauteur), True, (0, 0, 0), (255, 255, 255))
         screen.blit(txt_hauteur, (260, 120))
 
-        down_height = pygame.transform.rotate(pygame.image.load('assets/haut.png'), 270)
-        down_height_rect = down_height.get_rect()
-        down_height_rect.x = 470
-        down_height_rect.y = 100
-
         if hauteur > 5:
             screen.blit(down_height, down_height_rect)
 
+        # on affiche le bouton pour changer le mode de difficulté
         if hard_mod:
             ombre = "Oui"
         else:
@@ -72,11 +55,12 @@ while running:
         display_mod = font.render('Mode difficile : ' + ombre, True, (0, 0, 0), (255, 255, 255))
         screen.blit(display_mod, (200, 200))
 
-        mod_button = pygame.transform.rotate(pygame.image.load('assets/haut.png'), 270)
-        mod_button_rect = down_width.get_rect()
-        mod_button_rect.x = 530
-        mod_button_rect.y = 190
         screen.blit(mod_button, mod_button_rect)
+
+        # on affiche le bouton pour lancer le jeu
+        screen.blit(play, play_rect)
+
+        # on met un contrôleur d'événement pour les boutons
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
                 longueur = click(event, up_width_rect, longueur, 5)
@@ -110,6 +94,16 @@ while running:
                                   (arc.get_destination().get_y() + 1 / 2) * taille_case),
                                  int(taille_case * 0.9))
 
+        if display_solution:
+            # on affiche la solution
+            for i in range(len(maze.solution) - 1):
+                pygame.draw.line(screen, (255, 0, 0),
+                                 ((maze.solution[i].get_x() + 1 / 2) * taille_case,
+                                  (maze.solution[i].get_y() + 1 / 2) * taille_case),
+                                 ((maze.solution[i + 1].get_x() + 1 / 2) * taille_case,
+                                  (maze.solution[i + 1].get_y() + 1 / 2) * taille_case),
+                                 taille_case // 2)
+
         # on affiche le depart et l'arrivée
         img_depart = pygame.image.load('assets/depart.png')
         img_depart = pygame.transform.scale(img_depart, (taille_case, taille_case))
@@ -119,8 +113,6 @@ while running:
         img_fin = pygame.transform.scale(img_fin, (taille_case / 2, taille_case / 2))
         screen.blit(img_fin, ((maze.fin.get_x() + 1 / 4) * taille_case, (maze.fin.get_y() + 1 / 4) * taille_case))
 
-        # on affiche le joueur
-
         for event in pygame.event.get():
             match event.type:
                 case pygame.QUIT:
@@ -129,16 +121,24 @@ while running:
                 case pygame.KEYDOWN:
                     match event.key:
                         case pygame.K_LEFT | pygame.K_q:
-                            player.test_emplacement(maze, "gauche")
+                            player.move(maze, "gauche")
                         case pygame.K_RIGHT | pygame.K_d:
-                            player.test_emplacement(maze, "droite")
+                            player.move(maze, "droite")
                         case pygame.K_DOWN | pygame.K_s:
-                            player.test_emplacement(maze, "bas")
+                            player.move(maze, "bas")
                         case pygame.K_UP | pygame.K_z:
-                            player.test_emplacement(maze, "haut")
+                            player.move(maze, "haut")
                         case pygame.K_ESCAPE:
-                            print(maze.solution)
+                            display_solution = True
+
+        # on affiche le joueur
         player.draw(screen)
+
+        # on affiche l'ombre si le mode difficile est activé
+        if hard_mod:
+            player.draw_ombre(screen)
+
+        # on affiche le message de victoire si le joueur arrive à la fin
         if player.position == maze.fin:
             running = False
             home = False
@@ -149,6 +149,7 @@ while running:
 
     pygame.display.flip()
 
+    # on met un délai pour éviter que le jeu se ferme instantanément
     if not running:
         pygame.time.wait(800)
 
