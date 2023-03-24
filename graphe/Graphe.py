@@ -77,7 +77,10 @@ class Graphe:
         return self.noeuds
 
     def get_noeud(self, x: int, y: int) -> Noeud:
-        return self.noeuds[x + y * self.longueur]
+        res = None
+        if (x + y * self.longueur) < len(self.noeuds):
+            res = self.noeuds[x + y * self.longueur]
+        return res
 
     def ajouter_arc(self, noeud1: Noeud, noeud2: Noeud):
         noeud1.ajouter_voisin(noeud2)
