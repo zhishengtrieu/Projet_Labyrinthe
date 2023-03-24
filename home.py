@@ -26,7 +26,7 @@ down_height_rect.y = 100
 
 mod_button = pygame.transform.rotate(pygame.image.load('assets/haut.png'), 270)
 mod_button_rect = down_width.get_rect()
-mod_button_rect.x = 530
+mod_button_rect.x = 510
 mod_button_rect.y = 190
 
 play = pygame.image.load("assets/play.png")
