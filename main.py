@@ -1,3 +1,5 @@
+import pygame
+
 from Maze import *
 from home import *
 from Player import *
@@ -5,23 +7,22 @@ from Player import *
 # on initialise la longueur et la hauteur du labyrinthe
 longueur, hauteur = 10, 10
 
-# la taille de la fenêtre du jeu
-window_height, window_width = 700, 700
 
 pygame.init()
-screen = pygame.display.set_mode((window_width, window_height), pygame.RESIZABLE)
+# le screen est en plein écran
+screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 # on charge le fond
 background = pygame.image.load('assets/laby.jpg')
 # on veut que l'image de fond prenne toute la fenêtre
+window_width, window_height = pygame.display.get_window_size()
 background = pygame.transform.scale(background, (window_width, window_height))
 
 pygame.display.set_caption("Labyrinthe")
 font = pygame.font.SysFont("Times New Roman, Arial", 40)
 
-#on charge une icône pour la fenêtre
+# on charge une icône pour la fenêtre
 icon = pygame.image.load('assets/arrivee.png')
 pygame.display.set_icon(icon)
-
 
 running = True
 home = True
@@ -144,6 +145,7 @@ while running:
 
         # on affiche le joueur
         player.draw(screen)
+        maze.zoro.draw(screen)
 
         # on affiche l'ombre si le mode difficile est activé
         if hard_mod:
@@ -165,7 +167,18 @@ while running:
             pygame.display.update()
             pygame.time.wait(800)
 
+    # on charge le bouton pour sortir du jeu
+    quit_button = pygame.image.load('assets/quit.png')
+    quit_button = pygame.transform.scale(quit_button, (50, 50))
+    quit_button_rect = quit_button.get_rect()
+    quit_button_rect.x = window_width - quit_button_rect.width - 10
+    quit_button_rect.y = 10
+    screen.blit(quit_button, quit_button_rect)
+    # on ajoute le contrôleur d'événements pour le bouton
+    if quit_button_rect.collidepoint(pygame.mouse.get_pos()):
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            running = False
+            home = False
     pygame.display.update()
-
 
 pygame.quit()

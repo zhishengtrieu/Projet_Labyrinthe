@@ -1,6 +1,7 @@
 # Partie de Zhi-Sheng Trieu
 import random
 from Stack import *
+from Zoro import Zoro
 from graphe.Graphe import Graphe
 from Player import *
 
@@ -18,6 +19,8 @@ class Maze:
         self.dfs()
         self.player = Player(self.depart, self.taille_case)
         self.resolution()
+        pos = random.choice(self.graphe.noeuds)
+        self.zoro = Zoro(pos, self.taille_case)
 
     def dfs(self):
         # on utilise le parcours en profondeur pour créer le labyrinthe
