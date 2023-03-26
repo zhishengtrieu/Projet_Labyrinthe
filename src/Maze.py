@@ -1,11 +1,9 @@
 # Partie de Zhi-Sheng Trieu
 import random
-from Stack import *
-from Zoro import Zoro
-from graphe.Graphe import Graphe
-from Player import *
-from algo.DFS import DFS
-from algo.Dijkstra import Dijkstra
+from src.perso.Zoro import Zoro
+from src.graphe.Graphe import Graphe
+from src.perso.Player import *
+from src.algo.DFS import DFS
 
 
 class Maze:

@@ -1,4 +1,4 @@
-from algo.Algorithme import Algorithme
+from src.algo.Algorithme import Algorithme
 
 
 class Dijkstra(Algorithme):

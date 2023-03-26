@@ -1,7 +1,7 @@
 import random
 
-from algo.Algorithme import Algorithme
-from Stack import Stack
+from src.algo.Algorithme import Algorithme
+from src.Stack import Stack
 
 
 class DFS(Algorithme):

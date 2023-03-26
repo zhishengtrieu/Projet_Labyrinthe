@@ -6,7 +6,7 @@ import random
 
 import pygame
 
-from Player import Player
+from src.perso.Player import Player
 
 
 class Zoro(Player):

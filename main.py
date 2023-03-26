@@ -1,8 +1,6 @@
-import pygame
-
-from Maze import *
+from src.Maze import *
 from home import *
-from Player import *
+from src.perso.Player import *
 
 # on initialise la longueur et la hauteur du labyrinthe
 longueur, hauteur = 10, 10
@@ -172,8 +170,8 @@ while running:
             pygame.time.wait(800)
 
     # on charge le bouton pour sortir du jeu
-    quit_button = pygame.image.load('assets/quit.png')
-    quit_button = pygame.transform.scale(quit_button, (50, 50))
+    quit_button = pygame.image.load('assets/exit.png')
+    quit_button = pygame.transform.scale(quit_button, (60, 60))
     quit_button_rect = quit_button.get_rect()
     quit_button_rect.x = window_width - quit_button_rect.width - 10
     quit_button_rect.y = 10
