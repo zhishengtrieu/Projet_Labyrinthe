@@ -3,7 +3,6 @@ from home import *
 from src.perso.Player import *
 
 # on initialise la longueur et la hauteur du labyrinthe
-longueur, hauteur = 10, 10
 
 
 pygame.init()
@@ -13,7 +12,6 @@ screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 background = pygame.image.load('assets/laby.jpg')
 # on veut que l'image de fond prenne toute la fenêtre
 window_width, window_height = pygame.display.get_window_size()
-background = pygame.transform.scale(background, (window_width, window_height))
 
 pygame.display.set_caption("Labyrinthe")
 font = pygame.font.SysFont("Times New Roman, Arial", 40)
@@ -24,62 +22,40 @@ pygame.display.set_icon(icon)
 
 running = True
 home = True
-hard_mod = False
 maze = None
 display_solution = False
 
+accueil = Home(screen, window_width, window_height, font)
+
 while running:
     if home:
-        # on affiche l'image de fond de l'accueil
-        screen.blit(background, (0, 0))
+        accueil.actualiser()
 
-        # on affiche des boutons pour modifier la longueur et la hauteur du labyrinthe
-        screen.blit(up_width, up_width_rect)
 
-        txt_longueur = font.render('Longueur  :' + str(longueur), True, (0, 0, 0), (255, 255, 255))
-        screen.blit(txt_longueur, (250, 35))
 
-        if longueur > 5:
-            screen.blit(down_width, down_width_rect)
-
-        screen.blit(up_height, up_height_rect)
-
-        txt_hauteur = font.render('Hauteur  :' + str(hauteur), True, (0, 0, 0), (255, 255, 255))
+        txt_hauteur = font.render('Hauteur  :' + str(accueil.hauteur), True, (0, 0, 0), (255, 255, 255))
         screen.blit(txt_hauteur, (260, 115))
 
-        if hauteur > 5:
-            screen.blit(down_height, down_height_rect)
 
-        # on affiche le bouton pour changer le mode de difficulté
-        if hard_mod:
-            ombre = "Difficile"
-        else:
-            ombre = "Normal"
-        display_mod = font.render('Mode : ' + ombre, True, (0, 0, 0), (255, 255, 255))
-        screen.blit(display_mod, (250, 200))
 
-        screen.blit(mod_button, mod_button_rect)
-
-        # on affiche le bouton pour lancer le jeu
-        screen.blit(play, play_rect)
 
         # on met un contrôleur d'événement pour les boutons
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                longueur = click(event, up_width_rect, longueur, 5)
-                hauteur = click(event, up_height_rect, hauteur, 5)
-                if longueur > 5:
-                    longueur = click(event, down_width_rect, longueur, -5)
-                if hauteur > 5:
-                    hauteur = click(event, down_height_rect, hauteur, -5)
-                if change_mod(event, mod_button_rect, hard_mod) is not None:
-                    hard_mod = change_mod(event, mod_button_rect, hard_mod)
-                if play_rect.collidepoint(event.pos) and not longueur == 0:
+                accueil.longueur = accueil.click(event, accueil.up_width_rect, accueil.longueur, 5)
+                accueil.hauteur = accueil.click(event, accueil.up_height_rect, accueil.hauteur, 5)
+                if accueil.longueur > 5:
+                    accueil.longueur = accueil.click(event, accueil.down_width_rect, accueil.longueur, -5)
+                if accueil.hauteur > 5:
+                    accueil.hauteur = accueil.click(event, accueil.down_height_rect, accueil.hauteur, -5)
+                if accueil.change_mod(event, accueil.mod_button_rect) is not None:
+                    accueil.change_mod(event, accueil.mod_button_rect)
+                if accueil.play_rect.collidepoint(event.pos) and not accueil.longueur == 0:
                     home = False
-                    case_height = window_height // hauteur
-                    case_width = window_width // longueur
-                    taille_case = window_height // max(longueur, hauteur)
-                    maze = Maze(longueur, hauteur, taille_case)
+                    case_height = window_height // accueil.hauteur
+                    case_width = window_width // accueil.longueur
+                    taille_case = window_height // max(accueil.longueur, accueil.hauteur)
+                    maze = Maze(accueil.longueur, accueil.hauteur, taille_case)
                     player = maze.player
             if event.type == pygame.QUIT:
                 running = False
@@ -150,7 +126,7 @@ while running:
         maze.zoro.draw(screen)
 
         # on affiche l'ombre si le mode difficile est activé
-        if hard_mod:
+        if accueil.hard_mod:
             player.draw_ombre(screen)
 
         # on affiche le message de victoire si le joueur arrive à la fin
@@ -161,7 +137,7 @@ while running:
 
             msg = font.render('You Win !', True, (255, 0, 0))
             # on veut que le message apparaisse au milieu de l'écran
-            msg_rect = msg.get_rect(center=(window_height // 2, window_width // 2))
+            msg_rect = msg.get_rect(center=(window_width // 2, window_height // 2))
             screen.blit(msg, msg_rect)
 
         # on met un délai pour éviter que le jeu retourne instantanément à l'accueil
