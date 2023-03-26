@@ -2,6 +2,10 @@ import random
 
 
 class Arc:
+    """
+    Classe pour représenter un arc du graphe
+    """
+
     def __init__(self, destination):
         self.destination = destination
 
@@ -10,6 +14,10 @@ class Arc:
 
 
 class Noeud:
+    """
+    Classe pour représenter un nœud du graphe
+    """
+
     def __init__(self, x, y):
         self.arcs = []
         self.visited = False
@@ -20,7 +28,9 @@ class Noeud:
         self.arcs.append(Arc(voisin))
 
     def arcs_possibles(self, graphe) -> list:
-        # on récupère les voisins possibles qu'il y ait un chemin ou non
+        """
+        On récupère les voisins possibles qu'il y ait un chemin ou non
+        """
         arcs = []
         if self.x < graphe.longueur - 1:
             arcs.append(Arc(self.voisin("droite", graphe)))
@@ -33,6 +43,9 @@ class Noeud:
         return arcs
 
     def voisin(self, direction, graphe):
+        """
+        On récupère le voisin dans la direction donnée
+        """
         match direction:
             case "droite":
                 return graphe.get_noeud(self.x + 1, self.y)
@@ -66,6 +79,10 @@ class Noeud:
 
 
 class Graphe:
+    """
+    Classe pour représenter le graphe du labyrinthe
+    """
+
     def __init__(self, longueur: int, hauteur: int):
         self.longueur = longueur
         self.hauteur = hauteur

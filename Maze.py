@@ -7,6 +7,10 @@ from Player import *
 
 
 class Maze:
+    """
+    Classe qui gère le labyrinthe
+    """
+
     def __init__(self, longueur: int, hauteur: int, taille_case: int):
         self.solution = []
         self.longueur = longueur
@@ -23,7 +27,10 @@ class Maze:
         self.zoro = Zoro(pos, self.taille_case)
 
     def dfs(self):
-        # on utilise le parcours en profondeur pour créer le labyrinthe
+        """
+        On utilise le parcours en profondeur pour créer le labyrinthe
+        """
+
         pile = Stack()
         pile.push(self.depart)
         while not pile.empty():

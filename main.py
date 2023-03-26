@@ -78,6 +78,8 @@ while running:
                     hard_mod = change_mod(event, mod_button_rect, hard_mod)
                 if play_rect.collidepoint(event.pos) and not longueur == 0:
                     home = False
+                    case_height = window_height // hauteur
+                    case_width = window_width // longueur
                     taille_case = window_height // max(longueur, hauteur)
                     maze = Maze(longueur, hauteur, taille_case)
                     player = maze.player
@@ -88,6 +90,7 @@ while running:
         screen.fill((0, 0, 0))
         graphe = maze.graphe
         for noeud in graphe.get_noeuds():
+            # on dessine un cercle pour chaque nœud
             pygame.draw.circle(screen, (255, 255, 255),
                                ((noeud.get_x() + 1 / 2) * taille_case, (noeud.get_y() + 1 / 2) * taille_case),
                                taille_case * 0.9 // 2)
@@ -130,6 +133,7 @@ while running:
                     running = False
                     debut = False
                 case pygame.KEYDOWN:
+                    maze.zoro.move()
                     match event.key:
                         case pygame.K_LEFT | pygame.K_q:
                             player.move(maze, "gauche")
