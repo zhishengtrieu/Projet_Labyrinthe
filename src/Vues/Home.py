@@ -73,6 +73,9 @@ class Home:
         txt_longueur = self.font.render('Longueur  :' + str(self.longueur), True, (0, 0, 0), (255, 255, 255))
         self.screen.blit(txt_longueur, (250, 35))
 
+        txt_hauteur = self.font.render('Hauteur  :' + str(self.hauteur), True, (0, 0, 0), (255, 255, 255))
+        self.screen.blit(txt_hauteur, (260, 115))
+
     def click(self, event, objet, res, addition):
         if objet.collidepoint(event.pos):
             res += addition

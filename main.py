@@ -1,5 +1,5 @@
 from src.Maze import *
-from home import *
+from src.Vues.Home import *
 from src.perso.Player import *
 
 # on initialise la longueur et la hauteur du labyrinthe
@@ -30,14 +30,6 @@ accueil = Home(screen, window_width, window_height, font)
 while running:
     if home:
         accueil.actualiser()
-
-
-
-        txt_hauteur = font.render('Hauteur  :' + str(accueil.hauteur), True, (0, 0, 0), (255, 255, 255))
-        screen.blit(txt_hauteur, (260, 115))
-
-
-
 
         # on met un contrôleur d'événement pour les boutons
         for event in pygame.event.get():
