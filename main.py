@@ -30,7 +30,7 @@ accueil = Home(screen, window_width, window_height, font)
 
 # on charge le bouton pour sortir du jeu ou revenir au menu
 quit_button = pygame.image.load('assets/exit.png')
-quit_button = pygame.transform.scale(quit_button, (60, 60))
+quit_button = pygame.transform.scale(quit_button, (80, 80))
 quit_button_rect = quit_button.get_rect()
 quit_button_rect.x = window_width - quit_button_rect.width - 10
 quit_button_rect.y = 10
@@ -44,19 +44,19 @@ while running:
         # on met un contrôleur d'événement pour les boutons
         for event in pygame.event.get():
             if event.type == pygame.MOUSEBUTTONDOWN:
-                accueil.longueur = accueil.click(event, accueil.up_width_rect, accueil.longueur, 5)
-                accueil.hauteur = accueil.click(event, accueil.up_height_rect, accueil.hauteur, 5)
+                accueil.longueur = accueil.click(event, accueil.up_width_rect, accueil.longueur, 1)
+                accueil.hauteur = accueil.click(event, accueil.up_height_rect, accueil.hauteur, 1)
                 if accueil.longueur > 5:
-                    accueil.longueur = accueil.click(event, accueil.down_width_rect, accueil.longueur, -5)
+                    accueil.longueur = accueil.click(event, accueil.down_width_rect, accueil.longueur, -1)
                 if accueil.hauteur > 5:
-                    accueil.hauteur = accueil.click(event, accueil.down_height_rect, accueil.hauteur, -5)
+                    accueil.hauteur = accueil.click(event, accueil.down_height_rect, accueil.hauteur, -1)
                 if accueil.change_mod(event, accueil.mod_button_rect) is not None:
                     accueil.change_mod(event, accueil.mod_button_rect)
                 if accueil.play_rect.collidepoint(event.pos) and not accueil.longueur == 0:
                     home = False
                     case_height = window_height // accueil.hauteur
-                    case_width = window_width // accueil.longueur
-                    taille_case = window_height // max(accueil.longueur, accueil.hauteur)
+                    case_width = (window_width - 100) // accueil.longueur
+                    taille_case = min(case_height, case_width)
                     maze = Maze(accueil.longueur, accueil.hauteur, taille_case)
                     player = maze.player
                 # on ajoute le contrôleur d'événements pour le bouton

@@ -69,7 +69,13 @@ class Maze:
                                   (arc.get_destination().get_y() + 1 / 2) * taille_case),
                                  int(taille_case * 0.9))
 
-        if display_solution or self.player.position == self.zoro.position:
+        # on affiche la solution si elle est activée ou qu'on croise Zoro
+        zoro_solution = self.player.position == self.zoro.position
+        for voisin in self.player.position.get_arcs():
+            if voisin.destination == self.zoro.position:
+                zoro_solution = True
+
+        if display_solution or zoro_solution:
             # on affiche la solution
             self.draw_solution(screen)
 
