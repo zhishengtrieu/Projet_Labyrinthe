@@ -6,6 +6,11 @@ from src.perso.Player import *
 
 
 pygame.init()
+sound_home = pygame.mixer.Sound('assets/sound/ST1.mp3')
+sound_home.set_volume(0.5)
+sound_home.play(-1)
+
+sound = pygame.mixer.Sound('assets/sound/megalovania.mp3')
 # le screen est en plein écran
 screen = pygame.display.set_mode((0, 0), pygame.FULLSCREEN)
 # on charge le fond
@@ -34,8 +39,7 @@ quit_button = pygame.transform.scale(quit_button, (80, 80))
 quit_button_rect = quit_button.get_rect()
 quit_button_rect.x = window_width - quit_button_rect.width - 10
 quit_button_rect.y = 10
-sound = pygame.mixer.Sound('assets/sound/ST1.mp3')
-sound.play()
+
 while running:
     if home:
         if end_game:
@@ -55,9 +59,8 @@ while running:
                     accueil.change_mod(event, accueil.mod_button_rect)
                 if accueil.play_rect.collidepoint(event.pos) and not accueil.longueur == 0:
                     home = False
-                    sound.stop()
-                    sound = pygame.mixer.Sound('assets/sound/Dark_Mystery.mp3')
-                    sound.play()
+                    sound_home.stop()
+                    sound.play(-1)
                     case_height = window_height // accueil.hauteur
                     case_width = (window_width - 100) // accueil.longueur
                     taille_case = min(case_height, case_width)
@@ -111,11 +114,9 @@ while running:
                         if not home:
                             home = True
                             sound.stop()
-                            sound = pygame.mixer.Sound('assets/sound/ST1.mp3')
-                            sound.play()
+                            sound_home.play(-1)
                             display_solution = False
                             maze = None
-                            break
 
         # on met un délai pour éviter que le jeu retourne instantanément à l'accueil
         if home and end_game:
