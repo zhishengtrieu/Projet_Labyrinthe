@@ -4,6 +4,8 @@ from src.perso.Zoro import Zoro
 from src.graphe.Graphe import Graphe
 from src.perso.Player import *
 from src.algo.DFS import DFS
+from src.algo.BellmanFord import BellmanFord
+from src.algo.Dijkstra import Dijkstra
 
 
 class Maze:
@@ -25,6 +27,7 @@ class Maze:
         self.player = Player(self.depart, self.taille_case)
         pos = random.choice(self.graphe.noeuds)
         self.zoro = Zoro(pos, self.taille_case)
+        self.algo = BellmanFord(self.graphe)
 
     def resolution(self):
         """

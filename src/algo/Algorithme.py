@@ -1,9 +1,8 @@
-"""
-Interface Algorithme
-"""
-
-
 class Algorithme:
+    """
+    Classe Algorithme qui donne les méthodes de base pour les algorithmes
+    """
+
     def __init__(self):
         pass
 
