@@ -34,7 +34,8 @@ quit_button = pygame.transform.scale(quit_button, (80, 80))
 quit_button_rect = quit_button.get_rect()
 quit_button_rect.x = window_width - quit_button_rect.width - 10
 quit_button_rect.y = 10
-
+sound = pygame.mixer.Sound('assets/sound/ST1.mp3')
+sound.play()
 while running:
     if home:
         if end_game:
@@ -54,6 +55,9 @@ while running:
                     accueil.change_mod(event, accueil.mod_button_rect)
                 if accueil.play_rect.collidepoint(event.pos) and not accueil.longueur == 0:
                     home = False
+                    sound.stop()
+                    sound = pygame.mixer.Sound('assets/sound/Dark_Mystery.mp3')
+                    sound.play()
                     case_height = window_height // accueil.hauteur
                     case_width = (window_width - 100) // accueil.longueur
                     taille_case = min(case_height, case_width)
@@ -106,6 +110,9 @@ while running:
                     if quit_button_rect.collidepoint(pygame.mouse.get_pos()):
                         if not home:
                             home = True
+                            sound.stop()
+                            sound = pygame.mixer.Sound('assets/sound/ST1.mp3')
+                            sound.play()
                             display_solution = False
                             maze = None
                             break

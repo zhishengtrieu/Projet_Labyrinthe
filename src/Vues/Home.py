@@ -54,6 +54,7 @@ class Home:
         self.play_rect.y = self.window_height // 2 - self.play_rect.height // 2
 
     def actualiser(self):
+
         self.screen.fill((0, 0, 0))
         # on affiche l'image de fond de l'accueil
         self.screen.blit(self.background, (0, 0))

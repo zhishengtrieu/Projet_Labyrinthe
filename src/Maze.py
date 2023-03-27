@@ -27,7 +27,6 @@ class Maze:
         self.player = Player(self.depart, self.taille_case)
         pos = random.choice(self.graphe.noeuds)
         self.zoro = Zoro(pos, self.taille_case)
-        self.algo = BellmanFord(self.graphe)
 
     def resolution(self):
         """

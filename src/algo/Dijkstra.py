@@ -75,6 +75,7 @@ class Dijkstra(Algorithme):
     def generate(self):
         """
         On utilise l'algorithme de Dijkstra pour créer le labyrinthe
+        TODO: A revoir
         """
         self.dist = {}
         self.prev = {}
